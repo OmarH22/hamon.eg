@@ -410,6 +410,10 @@ const SPECS: [string,string][] = [
 
 function Product() {
   const [active,setActive] = useState(0)
+  const swatchStyle = (hex: string, isActive: boolean): React.CSSProperties => ({
+    background: hex,
+    border: isActive ? "2px solid #C9A96E" : "2px solid rgba(0,0,0,0.15)",
+  })
   return (
     <>
       <style>{`
@@ -454,7 +458,7 @@ function Product() {
             <div className="cw-row">
               {COLORWAYS.map((c,i)=>(
                 <button key={i} className={`cw-dot ${active===i?"on":""}`}
-                  style={{background:c.hex,border:`2px solid ${active===i?"#C9A96E":"rgba(0,0,0,.15)}`}}
+                  style={swatchStyle(c.hex, active===i)}
                   onClick={()=>setActive(i)}/>
               ))}
               <span className="cw-nm">{COLORWAYS[active].name}</span>
