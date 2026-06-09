@@ -1,0 +1,24 @@
+/* src/app/globals.css — minimal, LandingPage.tsx owns its own styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #060606; color: #f7f7f5; overflow-x: hidden; }
+
+/* Admin dashboard scrollbar */
+.admin-scroll::-webkit-scrollbar { width: 4px; }
+.admin-scroll::-webkit-scrollbar-track { background: #1a1a1a; }
+.admin-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+/* Admin shimmer loader */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
