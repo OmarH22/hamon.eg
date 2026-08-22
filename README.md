@@ -204,48 +204,46 @@ It shows:
 
 ---
 
-## 6. Replacing the logo and product images
+## 6. Brand and product images
 
-**Every image reference in the whole site lives in one file: `src/lib/assets.ts`.**
-No component needs editing.
+**Every image reference in the site lives in one file: `src/lib/assets.ts`.**
+No component needs editing to swap artwork.
 
-Current files are clearly marked placeholders. Each placeholder literally prints the path you
-need to replace on top of the image.
-
-| What | File to replace | Recommended |
+| What | File | Notes |
 | --- | --- | --- |
-| HAMON logo | `public/brand/hamon-logo.svg` | SVG (best) or transparent PNG ≥ 512px tall. Horizontal wordmark or square mark both work — it renders inside a fixed-height box. |
-| Hero image | `public/products/hamon-hero.svg` | **1:1**, 1600×1600, JPG or WebP, ≤ 400 KB |
-| White sneaker | `public/products/hamon-white.svg` | **1:1**, 1600×1600, ≤ 400 KB |
-| Black sneaker | `public/products/hamon-black.svg` | **1:1**, 1600×1600, ≤ 400 KB |
-| Favicon | `public/brand/favicon.svg` | SVG, or swap for `favicon.ico` and update `src/app/layout.tsx` |
-| Social share image | `public/brand/hamon-og.svg` | **1200×630 JPG or PNG** — SVG does not work on social platforms |
+| HAMON logo | `public/brand/hamon-logo.png` | 927×180, transparent background, tinted to the brand ink |
+| Hero | `public/products/hamon-hero.jpg` | 1600×1600, white sneaker with extra margin for the 5:4 desktop crop |
+| White sneaker | `public/products/hamon-white.jpg` | 1600×1600 |
+| Black sneaker | `public/products/hamon-black.jpg` | 1600×1600 |
+| Favicon | `public/brand/favicon.png` | 512×512, the logo's H in ivory on ink |
+| Social share | `public/brand/hamon-og.jpg` | 1200×630, wordmark + product on white |
 
-### The two-step swap
+These were generated from the supplied artwork. Three things were done to it:
 
-1. Drop your file into the same folder (keep or change the name, your choice).
-2. Open `src/lib/assets.ts` and point the `src` at it:
+- **The "White" / "Black" captions were cropped off** the bottom of both product
+  photos — they were burned into the source images and would have shown on the page.
+- **Both shoes were scaled by one common factor** and centred on identical square
+  canvases, so the two cards read as a matched pair rather than two loose photos.
+- **The logo's white background was made transparent.** The source was a JPEG on
+  solid white, which would have appeared as a white box on the ivory header.
+  Alpha is derived from the artwork's luminance, so anti-aliased edges survive.
 
-```ts
-export const PRODUCT_IMAGES = {
-  hero:  { src: '/products/hamon-hero.jpg',  alt: ALT.white },
-  white: { src: '/products/hamon-white.jpg', alt: ALT.white },
-  black: { src: '/products/hamon-black.jpg', alt: ALT.black },
-} as const;
-```
+### Replacing them later
 
-That is all. Files ending in `.svg` are served as-is; the moment a slot points at a raster file
-(`.jpg`, `.png`, `.webp`) it automatically goes through the Next.js image optimizer, which
-generates responsive AVIF/WebP variants per screen size.
+1. Drop the new file into the same folder.
+2. Point `src/lib/assets.ts` at it.
 
-If you only have two photographs, point `hero` at the white (or black) file — it is a separate
-slot purely so the hero can use a different shot. If you do point it at the black sneaker, change
-its `alt` to `ALT.black` in the same file.
+Raster files (`.jpg`, `.png`, `.webp`) go through the Next.js image optimizer, which
+generates responsive AVIF/WebP variants — the hero currently ships as 4 KB at 384px
+wide and 12 KB at typical phone width, from a 36 KB source.
 
-**Shoot square, product centred, with roughly 10% breathing room.** The hero crops slightly to
-5:4 on large desktops; every other slot is exactly square, so nothing is ever distorted.
+**Shoot square, product centred, roughly 10% breathing room.** The hero crops to 5:4
+on wide desktops; every other slot is exactly square, so nothing is ever distorted.
+Keep the social share image at exactly 1200×630, and use JPG or PNG for it — SVG does
+not render on social platforms.
 
-The same white and black files are reused as the cards in the colour question — one upload each.
+If you swap the hero for the black sneaker, change its `alt` to `ALT.black` in the
+same file.
 
 ---
 

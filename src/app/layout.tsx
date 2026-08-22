@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   description: META.description,
   applicationName: 'HAMON',
   icons: {
-    icon: [{ url: '/brand/favicon.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/brand/favicon.svg' }],
+    icon: [{ url: '/brand/favicon.png', type: 'image/png', sizes: '512x512' }],
+    apple: [{ url: '/brand/favicon.png', sizes: '512x512' }],
   },
   openGraph: {
     type: 'website',
