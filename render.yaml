@@ -1,0 +1,49 @@
+# Render blueprint for the HAMON validation site.
+#
+# Deploying from this file: Render Dashboard > New > Blueprint > pick the repo.
+# Render reads this, creates the service, and prompts for the values marked
+# `sync: false` (they are never stored in the repository).
+#
+# Node version comes from .node-version.
+
+services:
+  - type: web
+    name: hamon-validation
+    runtime: node
+    # Frankfurt is Render's closest region to Egypt.
+    region: frankfurt
+    # `starter` stays awake. `free` works too, but it spins down after 15
+    # minutes of inactivity — a ~50s cold start on the first ad click, and its
+    # 512 MB may not be enough to build Next.js.
+    plan: starter
+    branch: main
+    # --include=dev is deliberate: Render sets NODE_ENV=production, and the
+    # build needs TypeScript, Tailwind and PostCSS from devDependencies.
+    # verify:copy fails the deploy if the locked Arabic copy was altered.
+    buildCommand: npm ci --include=dev && npm run verify:copy && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # --- server only, never sent to the browser -------------------------
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      # Render generates a strong random value and keeps it across deploys.
+      - key: ADMIN_SESSION_SECRET
+        generateValue: true
+
+      # --- public, compiled into the browser bundle ------------------------
+      # Set this to your final URL after the first deploy, then redeploy so the
+      # Open Graph image resolves absolutely. Until then the app falls back to
+      # RENDER_EXTERNAL_URL.
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      # Leave blank to disable the Meta Pixel entirely.
+      - key: NEXT_PUBLIC_META_PIXEL_ID
+        sync: false
+      - key: NEXT_PUBLIC_LANDING_VARIANT
+        value: v1

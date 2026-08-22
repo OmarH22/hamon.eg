@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --header-h: 60px;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --header-h: 76px;
+    }
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-ivory text-ink antialiased;
+    font-family: var(--font-arabic), 'Segoe UI', system-ui, -apple-system, sans-serif;
+    /* Arabic needs a little more line height than Latin to stay legible. */
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  section[id],
+  div[id] {
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.ink');
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: rgba(178, 154, 114, 0.28);
+  }
+
+  input,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  textarea {
+    /* iOS Safari zooms in on focus below 16px. */
+    font-size: 16px;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Entrance transition. The hidden state only exists when motion is welcome,
+     so the page is fully readable without JS and with reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 700ms var(--ease-calm),
+        transform 700ms var(--ease-calm);
+    }
+
+    .reveal[data-visible='true'] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .press {
+    @apply transition duration-200 ease-calm active:scale-[0.985];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Survey controls.
+
+   Each option is a <label> wrapping a visually-hidden native radio followed by
+   its visual face. Native radios keep arrow-key navigation, focus order and
+   screen-reader semantics; the adjacent-sibling selectors below carry the
+   selected and focus states. Positive and negative answers are styled
+   identically — no option is visually favoured.
+--------------------------------------------------------------------------- */
+@layer components {
+  .option-input {
+    @apply sr-only;
+  }
+
+  .option-face {
+    @apply flex min-h-[56px] w-full cursor-pointer items-center gap-3 rounded-field border
+           border-line bg-paper px-4 py-3 text-[15px] leading-[1.6] text-ink
+           transition duration-200 ease-calm;
+  }
+
+  .option-face:hover {
+    @apply border-ink/40;
+  }
+
+  .option-input:checked + .option-face {
+    @apply border-ink bg-ink/[0.035] shadow-select;
+  }
+
+  .option-input:focus-visible + .option-face,
+  .option-input:focus-visible + .chip-face,
+  .option-input:focus-visible + .color-face {
+    outline: 2px solid theme('colors.ink');
+    outline-offset: 3px;
+  }
+
+  .option-dot {
+    @apply relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full
+           border border-ink/30 transition duration-200 ease-calm;
+  }
+
+  .option-dot::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: theme('colors.ink');
+    opacity: 0;
+    transform: scale(0.4);
+    transition:
+      opacity 200ms var(--ease-calm),
+      transform 200ms var(--ease-calm);
+  }
+
+  .option-input:checked + .option-face .option-dot,
+  .option-input:checked + .color-face .option-dot {
+    @apply border-ink;
+  }
+
+  .option-input:checked + .option-face .option-dot::after,
+  .option-input:checked + .color-face .option-dot::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .chip-face {
+    @apply inline-flex min-h-[48px] cursor-pointer items-center justify-center rounded-full
+           border border-line bg-paper px-5 text-[15px] text-ink transition duration-200 ease-calm;
+  }
+
+  .chip-face:hover {
+    @apply border-ink/40;
+  }
+
+  .option-input:checked + .chip-face {
+    @apply border-ink bg-ink text-ivory shadow-select;
+  }
+
+  .color-face {
+    @apply block cursor-pointer overflow-hidden rounded-card border border-line bg-paper
+           transition duration-200 ease-calm;
+  }
+
+  .color-face:hover {
+    @apply border-ink/40;
+  }
+
+  .option-input:checked + .color-face {
+    @apply border-ink shadow-select;
+  }
+
+  /* Error state is applied to the whole group, never to individual options. */
+  [data-invalid='true'] .option-face,
+  [data-invalid='true'] .chip-face,
+  [data-invalid='true'] .color-face {
+    @apply border-alert/45;
+  }
+
+  .text-field {
+    /* 16px on phones so iOS Safari does not zoom in on focus. */
+    @apply w-full rounded-field border border-line bg-paper px-4 py-3 text-[16px] leading-[1.9] sm:text-[15.5px]
+           text-ink placeholder:text-subtle transition duration-200 ease-calm;
+  }
+
+  .text-field:hover {
+    @apply border-ink/30;
+  }
+
+  .text-field:focus {
+    @apply border-ink outline-none ring-1 ring-ink/70;
+  }
+}

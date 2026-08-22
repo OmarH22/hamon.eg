@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 72" width="340" height="72" role="img" aria-label="HAMON">
+  <!-- PLACEHOLDER LOGO — replace this file with the real HAMON logo. -->
+  <rect x="1" y="1" width="338" height="70" rx="8" fill="none" stroke="#CFC8BB" stroke-width="2" stroke-dasharray="6 6"/>
+  <text x="170" y="40" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif"
+        font-size="30" font-weight="600" letter-spacing="10" fill="#141312">HAMON</text>
+  <text x="170" y="59" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif"
+        font-size="11" letter-spacing="3" fill="#8A857C">LOGO PLACEHOLDER</text>
+</svg>

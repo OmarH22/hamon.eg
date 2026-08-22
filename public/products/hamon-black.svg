@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" role="img">
+  <rect width="1200" height="1200" fill="#EFEBE4"/>
+  <g fill="none" stroke="#CFC8BB" stroke-width="2">
+    <path d="M40 96V40h56M1104 40h56v56M1160 1104v56h-56M96 1160H40v-56"/>
+  </g>
+  <g font-family="Segoe UI, system-ui, sans-serif" text-anchor="middle">
+    <text x="600" y="570" font-size="30" letter-spacing="8" fill="#8A857C">PLACEHOLDER</text>
+    <text x="600" y="626" font-size="34" font-weight="600" fill="#4A473F">BLACK SNEAKER — 1:1</text>
+    <text x="600" y="676" font-size="21" fill="#8A857C">public/products/hamon-black.svg</text>
+  </g>
+</svg>
