@@ -7,6 +7,7 @@ import Panel from '@/components/admin/Panel';
 import StatCard from '@/components/admin/StatCard';
 import BarList from '@/components/admin/BarList';
 import AdminActions from '@/components/admin/AdminActions';
+import Diagnostics from '@/components/admin/Diagnostics';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -45,11 +46,7 @@ export default async function AdminPage() {
         <AdminActions />
       </header>
 
-      {data.error ? (
-        <p className="mt-8 rounded-field border border-alert/40 bg-alert/[0.04] p-4 text-[13.5px] text-alert">
-          {data.error}
-        </p>
-      ) : null}
+      {data.error ? <Diagnostics headline={data.error} detail={data.errorDetail} /> : null}
 
       <section className="mt-8">
         <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-subtle">

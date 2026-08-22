@@ -22,6 +22,8 @@ export interface QuestionBreakdown {
 export interface AdminData {
   configured: boolean;
   error?: string;
+  /** Raw message from Supabase. Admin-only — never shown to visitors. */
+  errorDetail?: string;
   totals: {
     responses: number;
     responsesToday: number;
@@ -90,7 +92,11 @@ export async function loadAdminData(): Promise<AdminData> {
   };
 
   if (!base.configured) {
-    return { ...base, error: 'Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.' };
+    return {
+      ...base,
+      error: 'Supabase is not configured.',
+      errorDetail: 'SUPABASE_URL and/or SUPABASE_SERVICE_ROLE_KEY are missing from the environment.',
+    };
   }
 
   try {
@@ -170,7 +176,8 @@ export async function loadAdminData(): Promise<AdminData> {
       submissions,
     };
   } catch (error) {
-    console.error('[admin] load failed:', error instanceof Error ? error.message : error);
-    return { ...base, error: 'Could not load data from Supabase. Check the server logs.' };
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('[admin] load failed:', message);
+    return { ...base, error: 'Could not load data from Supabase.', errorDetail: message };
   }
 }
