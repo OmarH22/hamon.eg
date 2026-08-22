@@ -148,7 +148,7 @@ configure anything by hand.
 | Setting | Value | Reason |
 | --- | --- | --- |
 | `region` | `frankfurt` | Render's closest region to Egypt. |
-| `plan` | `starter` | `free` spins down after 15 minutes idle — a ~50s cold start on the first ad click — and its 512 MB may be too little to build Next.js. Change one line if you accept that. |
+| `plan` | `free` | Costs nothing, but spins down after 15 minutes idle: the first visitor after a quiet period waits ~50s. Change this one line to `starter` ($7/mo) before running paid ads, or the cold start will be measured as lost interest. |
 | `buildCommand` | `npm ci --include=dev && npm run verify:copy && npm run build` | Render sets `NODE_ENV=production`, so `--include=dev` is required or TypeScript/Tailwind are missing at build time. `verify:copy` fails the deploy if the locked Arabic copy was altered. |
 | `startCommand` | `npm start` | `next start` binds `0.0.0.0` and reads Render's `PORT` automatically. |
 | `healthCheckPath` | `/api/health` | Liveness only — it never touches Supabase, so a database hiccup cannot cause Render to cycle a healthy service. |

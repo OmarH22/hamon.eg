@@ -12,10 +12,11 @@ services:
     runtime: node
     # Frankfurt is Render's closest region to Egypt.
     region: frankfurt
-    # `starter` stays awake. `free` works too, but it spins down after 15
-    # minutes of inactivity — a ~50s cold start on the first ad click, and its
-    # 512 MB may not be enough to build Next.js.
-    plan: starter
+    # `free` spins down after 15 minutes of inactivity, so the first visitor
+    # after an idle period waits ~50s for the service to wake. Fine while you
+    # are testing; switch this to `starter` before you spend money on ads, or
+    # that cold start will show up in your numbers as lost interest.
+    plan: free
     branch: main
     # --include=dev is deliberate: Render sets NODE_ENV=production, and the
     # build needs TypeScript, Tailwind and PostCSS from devDependencies.
